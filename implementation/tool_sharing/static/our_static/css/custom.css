@@ -1,0 +1,125 @@
+.text-align-center, .text-align-center th {
+    text-align: center;
+}
+
+.margin-contained-bottom{
+    margin-bottom: 100px;
+}
+
+.min-body-height{
+    min-height: 0;
+}
+
+.float-right-bottom{
+    float: right;
+    margin: 0px 20px 20px 0px;
+}
+
+.clickable-row:hover{
+    background-color: #5bc0de;
+    cursor:pointer;
+}
+
+.bs-callout{
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    border-left-width: 5px;
+    border-radius: 3px;
+    background-color: #f5f5f5;
+}
+
+.table-box{
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    border-left-width: 5px;
+    border-radius: 3px;
+    background-color: #f5f5f5;
+}
+
+.bs-callout-danger{
+    border-left-color: #ce4844;
+    color: #ce4844;
+}
+
+.bs-callout-info{
+    border-left-color: #1b809e;
+    color: #1b809e;
+}
+
+.bs-callout-warning{
+    border-left-color: #f0ad4e;
+    color: #aa6708;
+}
+
+.resize-text-area-none{
+    resize: none;
+}
+
+.light-pagination {
+    margin: -5px 0px -10px 0px;
+}
+
+.hide {
+    display: none;
+}
+
+.topSpaceForm{
+    margin-top: 10px;
+}
+
+.tab ul {
+    list-style-type: none;
+}
+
+.clearfix {
+    font-size: 75%;
+}
+
+.table-25 thead tr th {
+    width: 25%;
+}
+
+.table-20 thead tr th {
+    width: 20%;
+}
+
+.alert {
+    margin-bottom: 0;
+}
+
+h5 {
+    margin-top: 0;
+}
+
+.custom-padding {
+    padding: 0;
+}
+
+.custom-alert {
+    margin: 12px;
+    padding: 10px;
+}
+
+.custom-button {
+    margin: 10px;
+}
+
+.custom-alert-2 {
+    padding: 10px;
+}
+
+.custom-modal-width {
+    width: 80%;
+}
+
+.alert-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+form.ng-submitted input.ng-invalid, form.ng-submitted textarea.ng-invalid {
+    border:1px solid #d9534f;
+}

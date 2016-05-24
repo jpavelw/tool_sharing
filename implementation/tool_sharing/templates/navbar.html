@@ -1,0 +1,79 @@
+    <!-- Static navbar -->
+    {% load staticfiles %}
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{% url "index" %}" class="navbar-brand"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Tool Sharing</a></li>
+              {% if "cool_user" in request.session and "is_shared_zone" in request.session %}
+                <li class="{% if borrow %}active{% endif %}"><a href="{% url "tool_listing:tool_listing" %}"><span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Borrow</a></li>
+                <li {% if my_tools %}class="active"{% endif %}><a href="{% url "manage_tools:my_tools" %}"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> My Tools</a></li>
+                <li class="dropdown {% if my_requests %}active{% endif %}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> My Requests
+                        <span class="badge">
+                            {% if request.session.notification_s and request.session.notification_r %}
+                                {{ request.session.notification_s|add:request.session.notification_r }}
+                            {% elif request.session.notification_s %}
+                                {{ request.session.notification_s }}
+                            {% elif request.session.notification_r %}
+                                {{ request.session.notification_r }}
+                            {% else %} 0
+                            {% endif %}
+                        </span>
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url "request:sent" %}">Sent Requests <span class="badge">{% if request.session.notification_s %}{{ request.session.notification_s }}{% else %}0{% endif %}</span></a></li>
+                      <li><a href="{% url "request:received" %}">Received Requests <span class="badge">{% if request.session.notification_r %}{{ request.session.notification_r }}{% else %}0{% endif %}</span></a></li>
+                      <li><a href="{% url "manage_tools:available_reviews" %}">Available Reviews</a></li>
+                    </ul>
+                </li>
+              {% endif %}
+              {% if "cool_user" in request.session and "is_shared_zone" in request.session and "user_role" in request.session and request.session.user_role == 'ADMIN' %}
+                  <li class="dropdown {% if manage_shared_zone %}active{% endif %}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Shared Zone<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url "share_statistics:community_statistics" %}">Community Statistics</a></li>
+                        <li><a href="{% url "user:promote_coordinator" %}"></span> Manage Coordinators</a></li>
+                        <li><a href="{% url "shared_zone:update" %}">Update Share Zone</a></li>
+                    </ul>
+                  </li>
+              {% endif %}
+              {% if "cool_user" in request.session %}
+                  <li class="dropdown {% if my_profile %}active{% endif %}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> My Account<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url "user:my_profile" %}">My Profile</a></li>
+                      <li><a href="{% url "user:change_password" %}">Change Password</a></li>
+                      <li><a href="{% url "user:pickup_arrangement" %}">Pickup Arrangement</a></li>
+                        {% if 'is_shared_zone' in request.session %}
+                            <li><a href="{% url "user:history" %}">Borrowing History</a></li>
+                        {% endif %}
+                    </ul>
+                  </li>
+              {% endif %}
+          </ul>
+
+        {% if not request.get_full_path == "/sign_in/" %}
+          <ul class="nav navbar-nav navbar-right">
+            {% if "cool_user_name" in request.session %}
+                <li><a>[ Welcome {{ request.session.cool_user_name }} ]</a></li>
+            {% endif %}
+            {% if "cool_user" not in request.session %}
+              <li><a href="{% url "sign_in" %}"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Sign In</a></li>
+            {% endif %}
+            {% if "cool_user" in request.session %}
+              <li><a href="{% url "log_out" %}">Log Out <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>

@@ -1,0 +1,41 @@
+    {% extends "base.html" %}
+    {% load staticfiles %}
+    {% block head_title %}{{ title }} | {{ block.super }}{% endblock %}
+    
+    {% block jumbotron %}
+        <div class="row">
+            {% if messages %}
+              {% for msg in messages %}       
+                <div class="alert alert-{{msg.level_tag}}" style="margin-bottom: 10px;" role="alert">{{msg.message}}</div>
+              {% endfor %}
+            {% endif %}
+        </div>
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1 style="background: url('{% static "img/x-mates.ico" %}') no-repeat left"><span style="padding-left: 65px;">-Mates Team</span></h1>
+                    <p>The Tool Sharing project is designed to make sharing tools among the community members easy. The goal is to help you lend and borrow tools from the comfort of your home.{% if "cool_user_name" not in request.session %} Join Us today!</p>
+                    <p>
+                      <a class="btn btn-lg btn-primary" href="{% url "user:sign_up" %}" role="button">Join Us &raquo;</a>
+                    </p>
+                    {% else %}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block content %}
+        <div class="row">
+            <div class="col-sm-4">
+                <p class="lead text-align-center">Built with Django &amp; Bootstrap</p>
+            </div>
+            <div class="col-sm-4">
+                <p class="lead text-align-center">Created by awesome developers</p>
+            </div>
+            <div class="col-sm-4">
+                <p class="lead text-align-center">Always available</p>
+            </div>
+        </div>
+    {% endblock %}

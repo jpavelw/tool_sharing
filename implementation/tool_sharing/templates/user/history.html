@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block head_title %}Borrowing History | {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    {% if history %}
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Borrowing History</h3>
+          </div>
+          <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width:16%">Tool</th>
+                                <th style="width:14%">Owner</th>
+                                <th style="width:14%">Borrower</th>
+                                <th style="width:10%">Request Date</th>
+                                <th style="width:10%">Return Date</th>
+                                <th style="width:10%">Status</th>
+                                <th style="width:16%">Comment</th>
+                                <th style="width:10%">Shared From</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for record in history %}
+                            <tr>
+                                <td>{{ record.tool.name }}</td>
+                                <td>{{ record.lender }}</td>
+                                <td>{{ record.borrower }}</td>
+                                <td>{{ record.date }}</td>
+                                <td>{% if record.returned_date %}{{ record.returned_date }}{% endif %}</td>
+                                <td>{{ record.get_status_choices }}</td>
+                                <td>{{ record.comment }}</td>
+                                <td>{{ record.tool.get_shared_choices }}</td>
+                            </tr>
+                        {% endfor %}
+                        <tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Begin Paginator -->
+            {% if history.has_previous or history.has_next %}
+                <div class="panel-footer text-center">
+                    <ul class="pagination light-pagination">
+                        {% if sent_requests.has_previous %}
+                            <li><a href="?page={{ history.previous_page_number }}">Prev</a></li>
+                        {% endif %}
+
+                        {% for page in history.paginator.page_range %}
+                            <li class="{% if history.number == page %}active{% endif %}"><a href="?page={{ page }}">{{ page }}</a></li>
+                        {% endfor %}
+
+                        {% if history.has_next %}
+                            <li><a href="?page={{ history.next_page_number }}">Next</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+            <!-- End Paginator -->
+        </div>
+    {% endif %}
+{% endblock %}

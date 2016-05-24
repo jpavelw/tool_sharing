@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block head_title %}Sent Requests | {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    {% if sent_requests %}
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Sent Requests</h3>
+          </div>
+          <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width:20%">Tool</th>
+                                <th style="width:16%">Owner</th>
+                                <th style="width:16%">Request Date</th>
+                                <th style="width:16%">Status</th>
+                                <th style="width:20%">Comment</th>
+                                <th class="text-align-center" style="width:12%">Move to History</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for sent_request in sent_requests %}
+                            <tr>
+                                <td>{{ sent_request.tool.name|slice:":50" }}{% if sent_request.tool.name|length|get_digit:"-1" > 30 %}...{% endif %}</td>
+                                <td>{{ sent_request.lender }}</td>
+                                <td>{{ sent_request.date }}</td>
+                                <td>{{ sent_request.get_status_choices }}</td>
+                                <td>{{ sent_request.comment }}</td>
+                                <td class="text-align-center">{% if sent_request.status == sent_request.RETURNED or sent_request.status == sent_request.REJECTED %}<a href="{% url "request:move_to_history" "sent" sent_request.id %}"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span></a>{% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                        <tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Begin Paginator -->
+            {% if sent_requests.has_previous or sent_requests.has_next %}
+                <div class="panel-footer text-center">
+                    <ul class="pagination light-pagination">
+                        {% if sent_requests.has_previous %}
+                            <li><a href="?page={{ sent_requests.previous_page_number }}">Prev</a></li>
+                        {% endif %}
+
+                        {% for page in sent_requests.paginator.page_range %}
+                            <li class="{% if sent_requests.number == page %}active{% endif %}"><a href="?page={{ page }}">{{ page }}</a></li>
+                        {% endfor %}
+
+                        {% if sent_requests.has_next %}
+                            <li><a href="?page={{ sent_requests.next_page_number }}">Next</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+            <!-- End Paginator -->
+        </div>
+    {% endif %}
+{% endblock %}

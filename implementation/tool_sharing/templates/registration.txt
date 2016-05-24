@@ -1,0 +1,8 @@
+Thank you for joining Tool Sharing! You now have access to hundreds of thousands of tools and can interact with hundreds of people from your community.
+
+You can manage your account in the Tool Sharing online at {{ url }}.
+
+If you have any questions please email {{ email }}.
+
+Sincerely,
+X-Mates Team

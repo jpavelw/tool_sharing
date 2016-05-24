@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="page-header" style="margin-top: 0;">
+    <h1>Community Information<br/>
+      <small>{{shared_zone.name}} - {{shared_zone.address}}<br/>
+      {{shared_zone.description}}</small>
+    </h1>
+  </div>
+  <div class="row">
+      <div class="col-md-6">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Most used tools</h3>
+            </div>
+            <div class="panel-body">
+              <table class="table table-striped table-hover">
+                <th>Name</th>
+                <th>Code</th>
+                <th>Category</th>
+                {% for most_used_tool in most_used_tools %}
+                    <tr>
+                    <td>
+                      <a href="{% url 'tool_listing:tool_detail' id=most_used_tool.id %}"  style="text-decoration: none;">
+                        {{most_used_tool.name}}
+                      </a>
+                    </td>
+                    <td>{{most_used_tool.code}}</td>
+                    <td>{{most_used_tool.category.name}}</td>
+                    </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+      </div>
+      <div class="col-md-6">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Recently used tools</h3>
+            </div>
+            <div class="panel-body">
+              <table class="table table-striped table-hover">
+                <th>Name</th>
+                <th>Code</th>
+                <th>Category</th>
+                {% for recently_used_tool in recently_used_tools %}
+                    <tr>
+                        <td>
+                          <a href="{% url 'tool_listing:tool_detail' id=recently_used_tool.id %}"  style="text-decoration: none;">
+                            {{recently_used_tool.name}}
+                          </a>
+                        </td>
+                        <td>{{recently_used_tool.code}}</td>
+                        <td>{{recently_used_tool.category.name}}</td>
+                    </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+      </div>
+  </div>
+
+{% endblock %}

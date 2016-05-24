@@ -1,0 +1,12 @@
+Thank you for using Tool Sharing!
+
+Your borrowing request for a {{ tool_name }} has been {{ request_status }}.
+
+The following message was left regarding your request:
+
+{{ message }}
+
+Please return the tool as soon as you finish using it. Remind the owner or the shed coordinator to mark the tool as returned.
+
+Sincerely,
+X-Mates Team

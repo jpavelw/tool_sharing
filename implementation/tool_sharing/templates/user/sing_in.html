@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ title }} | {{ block.super }}{% endblock %}
+
+    {% block content %}
+          <form class="form-signin" method="POST" action="">
+            {% csrf_token %}
+            <h2 class="form-signin-heading text-align-center">Welcome</h2>
+            <hr />
+            {{ form.as_p }}
+            <button class="btn btn-lg btn-primary btn-block" type="submit"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Sign in</button>
+          </form>
+      <p class="text-align-center"><a href="{% url "user:sign_up" %}">Sign Up</a> | <a href="{% url "user:forgot_password" %}">Forgot Password</a></p>
+    {% endblock %}

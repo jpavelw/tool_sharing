@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+  <div class="container-fluid">
+  {% if message %}
+      <div class="row" style="margin-bottom: 20px;">
+          <div class="col-sm-12">
+              <div class="alert alert-success" role="alert"><strong>{{ message }}</strong></div>
+          </div>
+      </div>
+  {% endif %}
+    <div class="row">
+    {% if tool %}
+    {% comment %}
+      <!-- Small left images -->
+      <div class="col-md-1">
+        {% for count in '123' %}
+          <div class="row">
+              <a href="#" class="thumbnail">
+                <img src="{% static "img/no-image.png" %}" alt="...">
+              </a>
+          </div>
+        {% endfor %}
+      </div>
+      <!-- /Small left images -->
+      {% endcomment %}
+
+      <!-- Big centered image -->
+      <div class="col-md-4">
+        <div>
+          <a href="{{ tool.picture.url }}" class="thumbnail" target="_blank">
+            <img src="{{ tool.picture.url }}" alt="{{tool.name}}">
+          </a>
+        </div>
+      </div>
+      <!-- /Big centered image -->
+
+      <!-- the tool information -->
+      <div class="col-md-8">
+        <div class="jumbotron" style="background: transparent;padding: 0 10px;">
+          <h2>{{tool.name | title}}</h2>
+          <h3>{{tool.code}}</h3>
+          <p>{{tool.description}}</p>
+          <!--<p>
+            <a href="#" class="btn btn-primary" role="button">
+              <span class="glyphicon glyphicon-send" aria-hidden="true"></span> 
+              Send request
+            </a>
+          </p>-->
+          <h4 style="font-weight: bold">Pickup Address</h4>
+          <h5>{{ pickup_address }}</h5>
+
+        {% if pickup_times %}
+            <h4 style="font-weight: bold">Pick up time</h4>
+            <h5>{{pickup_times.0}} between {{pickup_times.1}}</h5>
+        {% endif %}
+          {% if not message %}
+          <p>
+              <form action="" method="POST" name="requestForm">{% csrf_token %}
+                <button type="submit" class="btn btn-primary" id="tbn-tool-detail">
+                    <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Send request
+                </button>
+              </form>
+          </p>
+          {% endif %}
+        </div>
+      </div>
+      </div>
+
+      {% include 'tool_listing/review.html' %}
+
+      {% else %}
+      <div class="row">
+        <div class="col-md-12">
+            <h1 class="bs-callout-danger bs-callout">{{ not_found }}</h1>
+        </div>
+    {% endif %}
+    </div>
+  </div>
+{% endblock %}

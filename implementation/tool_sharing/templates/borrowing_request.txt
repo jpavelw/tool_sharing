@@ -1,0 +1,8 @@
+Thank you for using Tool Sharing!
+
+{{ borrower }} has requested to borrow your {{ tool }}.
+
+Please login into the application to either approve or reject this request.
+
+Sincerely,
+X-Mates Team

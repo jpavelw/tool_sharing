@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ title }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xm-12">
+            <a class="btn btn-info float-right-bottom" href="{% url "manage_tools:new_tool" %}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add New Tool</a>
+        </div>
+    </div>
+
+    {% if tools %}
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">My Tools</h3>
+          </div>
+          <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Picture</th>
+                                <th>Shared from</th>
+                                <th>Category</th>
+                                <th class="text-align-center">Update</th>
+                                <th class="text-align-center">Delete</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for tool in tools %}
+                            <tr>
+                                <td>{{ tool.name|slice:":30" }}{% if tool.name|length|get_digit:"-1" > 30 %}...{% endif %}</td>
+                                <td>{{ tool.description|slice:":40"}}{% if tool.description|length|get_digit:"-1" > 40 %}...{% endif %}</td>
+                                <td><img src="{{ tool.picture.url }}" alt="{{ tool.name }}" width="42"></td>
+                                <td>{{ tool.get_shared_choices }}</td>
+                                <td>{{ tool.category.name }}</td>
+                                {% if tool.status != tool.BORROWED %}
+                                <td class="text-align-center"><a href="{% url "manage_tools:edit_tool" tool.id %}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
+                                <td class="text-align-center"><a href="{% url "manage_tools:remove_tool" tool.id %}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+                                <td>
+                                    <select class="form-control upd_status">
+                                        {% for status in tool.editable_status_choices %}
+                                            <option {% if status.0 == tool.status %} selected="selected" {% endif %}value="{{ status.0 }},{% url "manage_tools:update_status" tool.id %}">{{ status.1 }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                {% else %}
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ tool.get_status_choices }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        <tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Begin Paginator -->
+            {% if tools.has_previous or tools.has_next %}
+                <div class="panel-footer text-center">
+                    <ul class="pagination light-pagination">
+                        {% if tools.has_previous %}
+                            <li><a href="?page={{ tools.previous_page_number }}">Prev</a></li>
+                        {% endif %}
+
+                        {% for page in tools.paginator.page_range %}
+                            <li class="{% if tools.number == page %}active{% endif %}"><a href="?page={{ page }}">{{ page }}</a></li>
+                        {% endfor %}
+                        
+                        {% if tools.has_next %}
+                            <li><a href="?page={{ tools.next_page_number }}">Next</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+            <!-- End Paginator -->
+        </div>
+    {% endif %}
+{% endblock %}

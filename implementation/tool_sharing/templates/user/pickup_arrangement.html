@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ title }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+  <style type="text/css">
+    .errors {
+      color:red;
+      font-weight:bold;
+    }
+  </style>
+  <form action="#" method="POST" role="form">
+    {% csrf_token %}  
+     <div class="row">
+        <legend>Pickup arrangement</legend>
+        <div class="col-md-2">
+          {% for day in form.week_days %}
+            <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="days" value="{{day}}" {% if day in pickup_days %} checked {% endif %}>
+                  {{day}}
+                </label>
+              </div>
+          {% endfor %}
+
+          <span class="errors">{{form.errors.days.0}}</span>
+        </div>
+
+        <div class="col-md-8">
+          <label>From
+            <input type="time" name="time_from" id="time_from" class="form-control"  value="{{pickup_times.0}}" required="true" title="">
+          </label>
+          <span class="errors">{{form.errors.time_from.0}}</span>
+          {{form.fi}}
+          <label style="margin-left: 20px;">To
+            <input type="time" name="time_to" id="time_to" class="form-control" value="{{pickup_times.1}}"  title="">
+          </label>
+          <span class="errors">{{form.errors.time_to.0}}</span>
+        </div>
+     </div>
+    
+    <button type="submit" class="btn btn-primary" style="margin-top:50px;">Set time</button>
+  </form>
+
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger" style="margin-top:30px;"> 
+      {{ form.non_field_errors }}
+    </div>
+  {% endif %}
+
+  {% if messages %}
+    <div class="alert alert-success" style="margin-top:30px;">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+
+{% endblock %}
+    

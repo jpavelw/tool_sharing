@@ -1,0 +1,44 @@
+      <!-- /the tool information -->
+      <span class="hide" id="url">{% url "manage_tools:get_reviews" pk=id %}</span>
+      <div class="row" ng-app="toolReview">
+        <div class="col-md-12" ng-controller="ToolController as toolCtr">
+          <div class="tab">
+          <!--  Tool Reviews List -->
+            <ul>
+              <h4 ng-show="toolCtr.reviews.length > 0">Reviews</h4>
+              <li ng-repeat="review in toolCtr.reviews">
+                <blockquote>
+                  <strong>{$ review.fields.rate $} Stars</strong>
+                  {$ review.fields.title $}
+                  <br/>
+                  {$ review.fields.description $}
+                  <cite class="clearfix">&#8212; on {$ review.fields.timestamp | date $} by {$ review.fields.user_name $}</cite>
+                </blockquote>
+              </li>
+            </ul>
+
+            {% if may_leave_comment %}
+            <form name="reviewForm" ng-controller="ReviewController as reviewCtrl" ng-submit="reviewForm.$valid && reviewCtrl.addReview('{% url "manage_tools:post_review" pk=id %}')" novalidate>{% csrf_token %}
+              <blockquote ng-show="reviewCtrl.review">
+                <b ng-show="reviewCtrl.review.rate">{$ reviewCtrl.review.rate $} Rate</b>
+                <span ng-show="reviewCtrl.review.title">&#8212; {$ reviewCtrl.review.title $}</span>
+                <br/>
+                {$ reviewCtrl.review.description $}
+                <br/>
+                <cite class="clearfix"><b ng-show="reviewCtrl.review.user_name">By </b><span ng-show="reviewCtrl.review.user_name">{$ reviewCtrl.review.user_name $}</span></cite>
+              </blockquote>
+              <section ng-show="reviewCtrl.show">
+                <h4>Submit a Review</h4>
+                <select ng-model="reviewCtrl.review.rate" ng-options="rate for rate in [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]" class="form-control reposSortOrder topSpaceForm" required>
+                  <option value="">Rate the Tool</option>
+                </select>
+                <input ng-model="reviewCtrl.review.title" class="form-control textField topSpaceForm" placeholder="Write a short title..." required />
+                <textarea ng-model="reviewCtrl.review.description" placeholder="Write a short review of the tool..." class="form-control topSpaceForm resize-text-area-none" rows="3" required></textarea>
+                <input ng-model="reviewCtrl.review.user_name" class="form-control textField topSpaceForm" placeholder="Leave user name here..." required />
+                <p class="text-right"><a class="btn btn-danger topSpaceForm" href="{% url "manage_tools:review_review" id %}"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Discard Review</a> <button type="submit" class="btn btn-primary topSpaceForm"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Submit Review</button></p>
+              </section>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>

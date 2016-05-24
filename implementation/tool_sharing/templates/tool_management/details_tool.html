@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{# {% load crispy_forms_tags %} #}
+{% block head_title %}{{ title }} | {{ block.super }}{% endblock %}
+{% block content %}
+    <div class="row">
+        {% if form %}
+            <form method="POST" action="" enctype="multipart/form-data" class="detail-form">{% csrf_token %}
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            {% if not submitted %}
+                                {% if update %}
+                                    <input type="hidden" name="id" value="{{ pk }}">
+                                {% endif %}
+                                {# {{ form|crispy }} #}
+                                {{ form.as_p }}
+                                {% if img %}
+                                    <a href="{{ img }}" target="_blank"><img width="136px" src="{{ img }}" alt="Tool"></a>
+                                {% endif %}
+                        {% endif %}
+                    </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="text-center">
+                            <p>
+                                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> {{ bottom_title }}</button>
+                                <a href="{% url "manage_tools:my_tools" %}" role="button" class="btn btn-default btn-large"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        {% else %}
+            <div class="col-md-12">
+                <h1 class="bs-callout-danger bs-callout">{{ not_found }}</h1>
+            </div>
+        {% endif %}
+    </div>
+    {% if success %}
+        <button type="button" class="btn btn-primary msg-alert hide" data-toggle="modal" data-target=".bs-example-modal-sm">msg</button>
+          <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <a class="close" href="{% url "manage_tools:my_tools" %}" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+                  {{ msg }}
+                </div>
+              </div>
+            </div>
+          </div>
+      {% endif %}
+{% endblock %}

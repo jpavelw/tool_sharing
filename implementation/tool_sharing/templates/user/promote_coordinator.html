@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ title }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+
+<h1 class="page-header">Manage Coordinators</h1>
+  <nav class="navbar navbar-default">
+    <div class="row">
+    <div class="col-sm-6 col-sm-offset-3" style="margin-top: .6%;margin-bottom: .6%;">
+        <div class="input-group">
+          <input type="text" id="search_term" class="form-control" placeholder="Firstname or email" value="{{ search_term }}">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" aria-label="Left Align" onclick="doSearch()">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+          </span>
+        </div>
+      </div>
+  </div>
+  </nav>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+        {% if messages %}
+          {% for msg in messages %}
+            <div class="alert alert-{{msg.level_tag}}" style="margin-bottom: 10px;" role="alert">{{msg.message}}</div>
+          {% endfor %}
+        {% endif %}
+        </div>
+    </div>
+  <div class="row">
+      <div class="col-sm-6">
+        {% if users_in_zone %}
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users_in_zone %}
+                <tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>{{ user.last_name }}, {{ user.first_name }} {{ user.middle_name }} </td>
+                  <td>{{ user.email }}</td>
+                  <td>
+                    <form action="" method="POST" role="form">
+                      {% csrf_token %}
+                      <input type="hidden" name="user_id" value="{{user.id}}">                                
+                      <button type="submit" class="btn btn-primary">Promote</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+            {% else %}
+            <div class="alert alert-info">
+              The user does not exist.
+            </div>
+            {% endif %}
+      </div>
+      <div class="col-sm-6">
+          {% if admins_in_zone %}
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for admin_in_zone in admins_in_zone %}
+                    <tr>
+                      <td>{{forloop.counter}}</td>
+                      <td>{{ admin_in_zone.last_name }}, {{ admin_in_zone.first_name }} {{ admin_in_zone.middle_name }}</td>
+                      <td>{{ admin_in_zone.email }}</td>
+                      <td>
+                        <form action="" method="POST" role="form">
+                          {% csrf_token %}
+                          <input type="hidden" name="user_id" value="{{admin_in_zone.id}}">                                
+                          <input type="hidden" name="cancel_admin_operation" value="true">                                
+                          <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          {% else %}
+            <div class="alert alert-info">
+              The user does not exist.
+            </div>
+          {% endif %}
+        </div>
+    </div>
+    <script type="text/javascript">
+      function doSearch(){
+        var search_term = $('#search_term').val();
+        var url = '{% url "user:promote_coordinator" %}' + search_term;
+        window.location = url
+      }
+    </script>
+{% endblock %}

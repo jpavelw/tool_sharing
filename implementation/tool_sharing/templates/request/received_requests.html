@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block head_title %}Received Requests | {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    {% include "request/action_modal.html" %}
+
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+        {% if messages %}
+          {% for msg in messages %}
+            <div class="alert alert-{{msg.level_tag}}" style="margin-bottom: 10px;" role="alert">{{msg.message}}</div>
+          {% endfor %}
+        {% endif %}
+        </div>
+    </div>
+
+    {% if received_requests %}
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Received Requests</h3>
+          </div>
+          <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-20">
+                        <thead>
+                            <tr>
+                                <th>Tool</th>
+                                <th>Borrower</th>
+                                <th>Request Date</th>
+                                <th>Status</th>
+                                <th class="text-align-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for received_request in received_requests %}
+                            <tr>
+                                <td>{{ received_request.tool.name|slice:":50" }}{% if received_request.tool.name|length|get_digit:"-1" > 50 %}...{% endif %}</td>
+                                <td>{{ received_request.borrower }}</td>
+                                <td>{{ received_request.date }}</td>
+                                <td id="status-{{ received_request.id }}">{{ received_request.get_status_choices }}</td>
+                                <td id="action-{{ received_request.id }}" class="text-align-center">
+                                    {% if received_request.status == received_request.PENDING_APPROVAL %}<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#actionModal" data-requestid="{{ received_request.id }}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Approve / <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Reject</button>
+                                    {% elif received_request.status == received_request.APPROVED %}<a class="btn btn-primary btn-xs" href="{% url "request:return_tool" received_request.id %}"><span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Mark as Returned</a>
+                                    {% elif received_request.status == received_request.RETURNED or received_request.status == received_request.REJECTED %}<a class="btn btn-primary btn-xs" href="{% url "request:move_to_history" "received" received_request.id %}"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Move to History</a>{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        <tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Begin Paginator -->
+            {% if received_requests.has_previous or received_requests.has_next %}
+                <div class="panel-footer text-center">
+                    <ul class="pagination light-pagination">
+                        {% if received_requests.has_previous %}
+                            <li><a href="?page={{ received_requests.previous_page_number }}">Prev</a></li>
+                        {% endif %}
+
+                        {% for page in received_requests.paginator.page_range %}
+                            <li class="{% if received_requests.number == page %}active{% endif %}"><a href="?page={{ page }}">{{ page }}</a></li>
+                        {% endfor %}
+
+                        {% if received_requests.has_next %}
+                            <li><a href="?page={{ received_requests.next_page_number }}">Next</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+            <!-- End Paginator -->
+        </div>
+    {% endif %}
+{% endblock %}

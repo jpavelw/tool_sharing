@@ -1,0 +1,59 @@
+<div class="modal fade" id="toolDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog custom-modal-width" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Please Review Tool Information</h4>
+      </div>
+      <div class="modal-body">
+          {% csrf_token %}
+          <span id="request-url" class="hide"></span>
+          <span id="tool-id" class="hide"></span>
+          <div class="container-fluid">
+              <div class="row" id="row-content">
+                  <!-- Big centered image -->
+                  <div class="col-md-4">
+                    <div>
+                      <a href="#" class="thumbnail" id="link-img" target="_blank">
+                        <img id="tool-img" src="" alt="">
+                      </a>
+                    </div>
+                  </div>
+                  <!-- /Big centered image -->
+
+                  <!-- the tool information -->
+                  <div class="col-md-8">
+                    <div class="jumbotron" style="background: transparent;padding: 0 10px;">
+                      <h2 id="tool-name"></h2>
+                      <h3 id="tool-code"></h3>
+                      <p id="tool-description"></p>
+                      <h4 style="font-weight: bold">Pickup Address</h4>
+                      <h5 id="pu-address"></h5>
+                      <div id="pick-up-time-div">
+                        <h4 style="font-weight: bold">Pick up time</h4>
+                        <h5><span id="pu-days"></span> between <span id="pu-hours"></span></h5>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="alert alert-danger custom-alert-2 hide" role="alert"><strong id="msg-error"></strong></div>
+          </div>
+
+
+      </div>
+      <div id="modal-footer" class="modal-footer text-align-center custom-padding">
+          <div class="row hide" id="msg-part">
+              <div class="col-sm-12">
+                  <div class="alert alert-success custom-alert" role="alert" id="msg-ok"></div>
+              </div>
+          </div>
+            <div id="form-part" class="custom-button">
+                <button class="btn btn-primary" id="confirm-request">
+                    <input type="hidden" value="json" name="format">
+                    <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Send request
+                </button>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
